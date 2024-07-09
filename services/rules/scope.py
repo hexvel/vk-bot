@@ -18,7 +18,7 @@ class Scope(ABCRule[Message]):
     async def check(self, message: Message):
         data = message.ctx_api.data
 
-        if data.user.get_rank() < self.rank:
+        if data.user.rank < self.rank:
             return False
         if not bool(message.out):
             return False

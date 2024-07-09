@@ -26,6 +26,7 @@ class Emoji:
     SAD = "☹️"
     HEART = "❤️"
     SUN = "☀️"
+    SETTINGS = "⚙️"
     CLOUD = "☁️"
     THUMBS_UP = "👍"
     THUMBS_DOWN = "👎"
@@ -74,3 +75,5 @@ class Emoji:
     SKULL = "💀"
     SKULL2 = "☠️"
     SKULL3 = "💀"
+    LIST = "📃"
+    USER = "👤"
