@@ -41,6 +41,7 @@ class Emoji:
     PENCIL = "✏️"
     PENCIL2 = "✒️"
     ROCKET = "🚀"
+    RIGHT = "▶️"
     SCISSORS = "✂️"
     WATER = "💧"
     WARNING = "⚠️"
@@ -76,4 +77,5 @@ class Emoji:
     SKULL2 = "☠️"
     SKULL3 = "💀"
     LIST = "📃"
+    LEFT = "◀️"
     USER = "👤"
