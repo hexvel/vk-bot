@@ -6,6 +6,7 @@ from vkbottle.http import AiohttpClient
 from vkbottle.user import User, UserLabeler
 
 from actions.user import user_labelers
+from repositories.alias import AliasManager
 from repositories.user import UserManager
 
 
@@ -23,7 +24,7 @@ class UserService:
         self._init_managers()
 
     def _init_managers(self) -> None:
-        # self.alias = AliasManager(self.user_id)
+        self.alias = AliasManager(self.user_id)
         self.user = UserManager(self.user_id)
         # self.trigger = TriggerManager(self.user_id)
 
@@ -33,7 +34,7 @@ class UserService:
 
     async def _init_managers_and_api(self) -> None:
         logger.debug(f"Init managers and api for user {self.user_id}...")
-        [await manager.init() for manager in [self.user]]
+        [await manager.init() for manager in [self.user, self.alias]]
         logger.success(f"Init managers and api for user {self.user_id}... OK")
 
         logger.debug(f"Init api for user {self.user_id}...")

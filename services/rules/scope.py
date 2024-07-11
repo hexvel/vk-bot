@@ -18,16 +18,12 @@ class Scope(ABCRule[Message]):
     async def check(self, message: Message):
         data = message.ctx_api.data
 
-        if data.user.rank < self.rank:
-            return False
-        if not bool(message.out):
-            return False
-        if not message.text:
+        if data.user.rank < self.rank or not bool(message.out) or not message.text:
             return False
 
-        # if message.text.split()[0].lower() in list(data.alias.aliases.keys()):
-        #     alias_command = data.alias.get_alias(message.text.split()[0].lower())
-        #     message.text = message.text.replace(message.text.split()[0], alias_command)
+        if message.text.split()[0].lower() in list(data.alias.aliases.keys()):
+            alias_command = data.alias.get_alias(message.text.split()[0].lower())
+            message.text = message.text.replace(message.text.split()[0], alias_command)
 
         command = message.text.split("\n")[0].split()
         if len(command) < 2:

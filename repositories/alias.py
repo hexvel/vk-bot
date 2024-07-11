@@ -1,4 +1,4 @@
-from models.user import Aliases
+from models.user import Users
 
 
 class AliasManager:
@@ -7,11 +7,11 @@ class AliasManager:
         self.aliases = {}
 
     async def init(self):
-        data = await Aliases.filter(user_id=self.user_id).all()
-        for alias in data:
-            self.aliases[alias.name] = {
-                "name": alias.name,
-                "command": alias.command,
+        data = await Users.filter(user_id=self.user_id).first()
+        for alias in data.alias["items"]:
+            self.aliases[alias["name"]] = {
+                "name": alias["name"],
+                "command": alias["command"],
             }
 
     def get_alias(self, alias):
@@ -22,10 +22,16 @@ class AliasManager:
 
     async def set_alias(self, alias: dict):
         self.aliases[alias["name"]] = alias
-        await Aliases.create(
-            user_id=self.user_id, name=alias["name"], command=alias["command"]
-        )
+        data = await Users.filter(user_id=self.user_id).first()
 
-    async def del_alias(self, name: str):
+        data.alias["items"].append(alias)
+        await data.save(update_fields=["alias"])
+
+    async def delete_alias(self, name: str):
         del self.aliases[name]
-        await Aliases.filter(user_id=self.user_id, name=name).delete()
+
+        data = await Users.filter(user_id=self.user_id).first()
+        data.alias["items"] = [
+            alias for alias in data.alias["items"] if alias["name"] != name
+        ]
+        await data.save(update_fields=["alias"])
