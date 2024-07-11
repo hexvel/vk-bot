@@ -1,44 +1,35 @@
 import random
 
-
-from loguru import logger
 from vkbottle.user import Message
 
 
-async def get_attachment_photo(message: Message):
+async def get_attachment(message: Message, attachment_type: str):
+    attachment = None
     if message.attachments:
-        if message.attachments[0].photo:
-            attachment = message.attachments[0].photo.sizes[-1].url
-        else:
-            attachment = None
-
+        attachment_item = getattr(message.attachments[0], attachment_type, None)
     elif message.reply_message and message.reply_message.attachments:
-        if message.reply_message.attachments[0].photo:
-            attachment = message.reply_message.attachments[0].photo.sizes[-1].url
-        else:
-            attachment = None
+        attachment_item = getattr(
+            message.reply_message.attachments[0], attachment_type, None
+        )
     else:
-        attachment = None
+        attachment_item = None
+
+    if attachment_item:
+        attachment = (
+            attachment_item.url
+            if attachment_type == "doc"
+            else attachment_item.sizes[-1].url
+        )
 
     return attachment
+
+
+async def get_attachment_photo(message: Message):
+    return await get_attachment(message, "photo")
 
 
 async def get_attachment_doc(message: Message):
-    if message.attachments:
-        if message.attachments[0].doc:
-            attachment = message.attachments[0].doc.url
-        else:
-            attachment = None
-
-    elif message.reply_message and message.reply_message.attachments:
-        if message.reply_message.attachments[0].doc:
-            attachment = message.reply_message.attachments[0].doc.url
-        else:
-            attachment = None
-    else:
-        attachment = None
-
-    return attachment
+    return await get_attachment(message, "doc")
 
 
 async def get_random(start: int = 0, _min: int = 1, _max: int = 100):
