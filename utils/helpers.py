@@ -27,7 +27,7 @@ async def get_attachment_doc(message: Message):
         else:
             attachment = None
 
-    elif message.reply_message.attachments:
+    elif message.reply_message and message.reply_message.attachments:
         if message.reply_message.attachments[0].doc:
             attachment = message.reply_message.attachments[0].doc.url
         else:
