@@ -24,11 +24,11 @@ numpy = "^2.0.0"
 qrcode = "^7.4.2"
 
 
-
 [tool.aerich]
 tortoise_orm = "config.tortoise_orm"
-location = "./migrations"
+location = "./models/migrations"
 src_folder = "./."
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

@@ -9,7 +9,7 @@ from config import Config, tortoise_orm
 from models.user import Users
 from services.user import UserService
 
-# logger.disable("vkbottle")
+logger.disable("vkbottle")
 
 
 @asynccontextmanager

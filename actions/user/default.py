@@ -5,6 +5,7 @@ from config import Emoji
 from models.user import Users
 from services.rules.id import FindID
 from services.rules.scope import Scope
+from utils.helpers import get_random
 
 labeler = UserLabeler()
 
@@ -36,18 +37,29 @@ async def info(message: Message, user_id: int):
         )
         return
 
+    user_raks = {
+        5: "Разработчик",
+        4: "Администратор",
+        3: "Модератор",
+        2: "Агент",
+        1: "Пользователь",
+    }
+
     fields_to_display = {
         f"{Emoji.GLASS} Баланс": user.balance,
         f"{Emoji.SPARKLES} Сквад": user.squad,
-        f"{Emoji.FIRE} Ранг": user.rank,
+        f"{Emoji.FIRE} Ранг": user_raks[user.rank],
         f"{Emoji.GIFT} Премиум статус": "Да" if user.premium else "Нет",
         f"{Emoji.SETTINGS} Префикс команд": user.prefix_command,
         f"{Emoji.SETTINGS} Префикс скриптов": user.prefix_script,
         f"{Emoji.SETTINGS} Префикс админа": user.prefix_admin,
         f"{Emoji.SETTINGS} Префикс доверенных": user.trust_prefix,
-        f"{Emoji.LIST} Список игнорируемых": user.ignore_list["users"],
-        f"{Emoji.LIST} Список доверенных": user.trust_list["users"],
+        f"{Emoji.LIST} Количество игнорируемых": len(user.ignore_list["users"]),
+        f"{Emoji.LIST} Количество доверенных": len(user.trust_list["users"]),
     }
+
+    attachment_count = await get_random(start=457239018, _min=1, _max=380)
+    attachment = f"photo-224389197_{attachment_count}"
 
     info_message = "\n".join(
         f"{field}: {value}" for field, value in fields_to_display.items()
@@ -57,6 +69,7 @@ async def info(message: Message, user_id: int):
         peer_id=message.peer_id,
         message=f"[id{user.user_id}|{Emoji.USER} Информация о пользователе]:\n{info_message}",
         message_id=message.id,
+        attachment=attachment,
     )
 
 

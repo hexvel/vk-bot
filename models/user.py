@@ -25,3 +25,4 @@ class Users(Model):
     trust_list = fields.JSONField(
         default={"users": []}, description="List of trusted users"
     )
+    alias = fields.JSONField(default={"items": []}, description="List of aliases")
