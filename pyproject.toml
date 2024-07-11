@@ -19,6 +19,9 @@ tortoise-orm = "0.20.0"
 aerich = "^0.7.2"
 aiomysql = "^0.2.0"
 pythonping = "^1.1.4"
+matplotlib = "^3.9.1"
+numpy = "^2.0.0"
+qrcode = "^7.4.2"
 
 
 

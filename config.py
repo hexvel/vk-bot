@@ -78,4 +78,5 @@ class Emoji:
     SKULL3 = "💀"
     LIST = "📃"
     LEFT = "◀️"
+    LOADING = "⏳"
     USER = "👤"
