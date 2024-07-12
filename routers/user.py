@@ -10,7 +10,7 @@ router = APIRouter(
     prefix="/api/users",
 )
 
-verification_codes = {}
+verification_data = {}
 
 
 class VerificationCodeRequest(BaseModel):
@@ -43,11 +43,19 @@ async def request_verification_code(request: VerificationCodeRequest):
     if not data:
         raise HTTPException(status_code=404, detail="User not found")
 
+    now = datetime.utcnow()
+    user_data = verification_data.get(request.user_id)
+    if user_data and 'last_request' in user_data:
+        time_since_last_request = now - user_data['last_request']
+        if time_since_last_request < timedelta(minutes=1):
+            raise HTTPException(status_code=429, detail="Too many requests. Please wait before requesting a new code.")
+
     code = ''.join(random.choices(string.digits, k=6))
 
-    verification_codes[request.user_id] = {
+    verification_data[request.user_id] = {
         "code": code,
-        "expires_at": datetime.utcnow() + timedelta(minutes=5)
+        "expires_at": now + timedelta(minutes=10),
+        "last_request": now
     }
 
     await Config.GROUP[214167102].api.messages.send(
@@ -69,14 +77,14 @@ async def update_token(request: TokenUpdateRequest):
     if not data:
         raise HTTPException(status_code=404, detail="User not found")
 
-    verification_data = verification_codes.get(request.user_id)
-    if not verification_data or verification_data["code"] != request.verification_code:
+    user_data = verification_data.get(request.user_id)
+    if not user_data or user_data["code"] != request.verification_code:
         raise HTTPException(status_code=400, detail="Invalid or expired verification code")
 
-    if verification_data["expires_at"] < datetime.utcnow():
+    if user_data["expires_at"] < datetime.utcnow():
         raise HTTPException(status_code=400, detail="Verification code has expired")
 
-    del verification_codes[request.user_id]
+    del verification_data[request.user_id]
 
     data.token = request.token
     await data.save()
