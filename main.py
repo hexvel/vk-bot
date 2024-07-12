@@ -36,7 +36,6 @@ async def lifespan(app: FastAPI):
 
             await Config.USER[user.user_id].run_module()
     yield
-
     await Tortoise.close_connections()
     logger.debug("App stopped")
 
