@@ -47,7 +47,7 @@ async def request_verification_code(request: VerificationCodeRequest):
 
     verification_codes[request.user_id] = {
         "code": code,
-        "expires_at": datetime.utcnow() + timedelta(minutes=10)
+        "expires_at": datetime.utcnow() + timedelta(minutes=5)
     }
 
     await Config.GROUP[214167102].api.messages.send(
