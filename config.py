@@ -26,6 +26,7 @@ class Emoji:
     SMILE = "😄"
     SAD = "☹️"
     HEART = "❤️"
+    NO = "❎"
     SUN = "☀️"
     SETTINGS = "⚙️"
     CLOUD = "☁️"

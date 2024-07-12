@@ -7,7 +7,7 @@ module_files = [
     file.stem for file in package_path.glob("*.py") if file.name != "__init__.py"
 ]
 
-user_labelers = [
+admin_labelers = [
     importlib.import_module(f".{module}", __package__).labeler
     for module in module_files
 ]

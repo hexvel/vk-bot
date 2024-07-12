@@ -10,7 +10,7 @@ from utils.helpers import get_random
 labeler = UserLabeler()
 
 
-@labeler.message(Scope(prefix=".ф", commands=["пинг", "ping"]))
+@labeler.message(Scope(prefix="ф", commands=["пинг", "ping"]))
 async def ping_api(message: Message):
     result = ping("api.vk.com", count=4)
     response_times = result.rtt_avg_ms if result.rtt_avg_ms else result.rtt_avg
@@ -23,7 +23,7 @@ async def ping_api(message: Message):
 
 
 @labeler.message(
-    Scope(prefix=".ф", commands=["инфо", "инфа", "info"]),
+    Scope(prefix="ф", commands=["инфо", "инфа", "info"]),
     FindID(),
 )
 async def info(message: Message, user_id: int):
@@ -73,7 +73,7 @@ async def info(message: Message, user_id: int):
     )
 
 
-@labeler.message(Scope(prefix=".ф", commands=["+др", "+fr"]), FindID())
+@labeler.message(Scope(prefix="ф", commands=["+др", "+fr"]), FindID())
 async def add_friend_command_wrapper(message: Message, user_id: int):
     add_friend = await message.ctx_api.friends.add(user_id=user_id)
 
@@ -91,7 +91,7 @@ async def add_friend_command_wrapper(message: Message, user_id: int):
     )
 
 
-@labeler.message(Scope(prefix=".ф", commands=["лс", "pc"]), FindID())
+@labeler.message(Scope(prefix="ф", commands=["лс", "pc"]), FindID())
 async def send_message_to_user(message: Message, user_id: int):
     message_split = message.text.split("\n", maxsplit=1)
 
@@ -113,7 +113,7 @@ async def send_message_to_user(message: Message, user_id: int):
     )
 
 
-@labeler.message(Scope(prefix=".ф", commands=["ид", "id"]), FindID())
+@labeler.message(Scope(prefix="ф", commands=["ид", "id"]), FindID())
 async def get_user_id(message: Message, user_id: int):
     if user_id == message.from_id:
         text = f"{Emoji.USER} [id{user_id}| Ваш ID: ] {user_id}"
@@ -130,7 +130,7 @@ async def get_user_id(message: Message, user_id: int):
     )
 
 
-@labeler.message(Scope(prefix=".ф", commands=["-др", "-fr"]), FindID())
+@labeler.message(Scope(prefix="ф", commands=["-др", "-fr"]), FindID())
 async def delete_friend_command_wrapper(message: Message, user_id: int):
     delete_friend = await message.ctx_api.friends.delete(user_id=user_id)
 
@@ -148,7 +148,7 @@ async def delete_friend_command_wrapper(message: Message, user_id: int):
     )
 
 
-@labeler.message(Scope(prefix=".ф", commands=["+чс", "-bl"]), FindID())
+@labeler.message(Scope(prefix="ф", commands=["+чс", "-bl"]), FindID())
 async def add_black_list(message: Message, user_id: int):
     add_black_list = await message.ctx_api.account.ban(owner_id=user_id)
 
@@ -164,7 +164,7 @@ async def add_black_list(message: Message, user_id: int):
     )
 
 
-@labeler.message(Scope(prefix=".ф", commands=["-чс", "-bl"]), FindID())
+@labeler.message(Scope(prefix="ф", commands=["-чс", "-bl"]), FindID())
 async def delete_black_list(message: Message, user_id: int):
     delete_black_list = await message.ctx_api.account.unban(owner_id=user_id)
 

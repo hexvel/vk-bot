@@ -5,6 +5,7 @@ from vkbottle.api import API
 from vkbottle.http import AiohttpClient
 from vkbottle.user import User, UserLabeler
 
+from actions.admin import admin_labelers
 from actions.user import user_labelers
 from repositories.alias import AliasManager
 from repositories.user import UserManager
@@ -44,8 +45,13 @@ class UserService:
     def _init_session(self) -> None:
         logger.debug(f"Init session for user {self.user_id}...")
         user_labeler = UserLabeler()
+
         for labeler in user_labelers:
             user_labeler.load(labeler)
+
+        for labeler in admin_labelers:
+            user_labeler.load(labeler)
+
         self.session = User(api=self.api, labeler=user_labeler)
         setattr(self.session.api, "data", self)
         logger.success(f"Init session for user {self.user_id}... OK")

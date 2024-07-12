@@ -1,4 +1,3 @@
-from loguru import logger
 from vkbottle.user import Message, UserLabeler
 
 from config import Emoji
@@ -7,7 +6,7 @@ from services.rules.scope import Scope
 labeler = UserLabeler()
 
 
-@labeler.message(Scope(prefix=".ф", commands=["+алиас"]))
+@labeler.message(Scope(prefix="ф", commands=["+алиас"]))
 async def add_alias(message: Message):
     data = message.ctx_api.data.alias
 
@@ -43,7 +42,7 @@ async def add_alias(message: Message):
     )
 
 
-@labeler.message(Scope(prefix=".ф", commands=["-алиас"]))
+@labeler.message(Scope(prefix="ф", commands=["-алиас"]))
 async def delete_alias(message: Message):
     data = message.ctx_api.data.alias
 
@@ -73,7 +72,7 @@ async def delete_alias(message: Message):
     )
 
 
-@labeler.message(Scope(prefix=".ф", commands=["алиасы"]))
+@labeler.message(Scope(prefix="ф", commands=["алиасы"]))
 async def get_alias(message: Message):
     data = message.ctx_api.data.alias
 

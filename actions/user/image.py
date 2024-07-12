@@ -5,12 +5,12 @@ from vkbottle.user import Message, UserLabeler
 from config import Emoji
 from mylib.qr import QRCode
 from services.rules.scope import Scope
-from utils.helpers import get_attachment_doc, get_attachment_photo
+from utils.helpers import get_attachment_photo
 
 labeler = UserLabeler()
 
 
-@labeler.message(Scope(prefix=".ф", commands=["qrcode"]))
+@labeler.message(Scope(prefix="ф", commands=["qrcode"]))
 async def qrcode(message: Message):
     try:
         if len(message.text.split()) <= 2:

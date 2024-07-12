@@ -30,11 +30,11 @@ class Scope(ABCRule[Message]):
             return False
 
         if self.prefix == "ф":
-            self.prefix = ["ф", data.user.get_prefix_commands()]
+            self.prefix = ["ф", data.user.prefix_command]
         if self.prefix == ".у":
-            self.prefix = [".у", data.user.get_prefix_scripts()]
+            self.prefix = [".у", data.user.prefix_script]
         if self.prefix == ".й":
-            self.prefix = [".й", data.user.get_prefix_admin()]
+            self.prefix = [".й", data.user.prefix_admin]
 
         return bool(
             command[0].lower() in self.prefix and command[1].lower() in self.commands

@@ -27,14 +27,10 @@ async def lifespan(app: FastAPI):
     await Config.GROUP[214167102].run_module()
 
     for user in await Users.all():
-        if not user.token:
-            await Users.filter(id=user.user_id).update(token="")
-        else:
-            Config.USER[user.user_id] = UserService(
-                user_id=user.user_id, token=user.token
-            )
+        Config.USER[user.user_id] = UserService(user_id=user.user_id, token=user.token)
 
-            await Config.USER[user.user_id].run_module()
+        await Config.USER[user.user_id].run_module()
+
     yield
     await Tortoise.close_connections()
     logger.debug("App stopped")
