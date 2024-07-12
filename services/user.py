@@ -10,7 +10,7 @@ from repositories.alias import AliasManager
 from repositories.user import UserManager
 
 
-class GroupService:
+class UserService:
     def __init__(self, user_id: int, token: str) -> None:
         self.token = token
         self.user_id = user_id
