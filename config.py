@@ -19,6 +19,7 @@ tortoise_orm = {
 
 class Config:
     USER = {}
+    GROUP = {}
 
 
 class Emoji:
