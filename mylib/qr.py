@@ -45,13 +45,22 @@ class QRCode:
 
     def generate_qr_code(self):
         """
-        Generates a QR code based on the input text.
+        Generates a QR code based on the text provided.
+
+        Does the following:
+        - Initializes a QRCode object with specific parameters.
+        - Adds the provided text to the QRCode.
+        - Makes the QRCode fit the data.
+        - Creates the QR image with specified fill and background colors.
+
+        Returns:
+        None
         """
         qr = qrcode.QRCode(
             version=1,
             error_correction=qrcode.constants.ERROR_CORRECT_H,
             box_size=10,
-            border=1,
+            border=4,
         )
         qr.add_data(self.text)
         qr.make(fit=True)
@@ -61,7 +70,17 @@ class QRCode:
 
     def resize_background_image(self):
         """
-        Resizes the background image to match the size of the QR image using Lanczos resampling.
+        Resizes the background image to match the size of the QR image.
+
+        This function checks if a background image is available. If it is, it resizes the
+        background image to match the size of the QR image. The resizing is done using the
+        Lanczos filter, which is a high-quality filter that is suitable for downsampling.
+
+        Parameters:
+            self (QRCodeWithBackground): The instance of the QRCodeWithBackground class.
+
+        Returns:
+            None
         """
         if self.background_image:
             self.background_image = self.background_image.resize(
@@ -70,14 +89,16 @@ class QRCode:
 
     def blend_images(self):
         """
-        Blend the QR code image with the background image if specified.
+        Blend the QR image with the background image if a background image is provided.
 
-        This method checks if the `with_background` attribute is True and if the `background_image` attribute is not None. If both conditions are met, it converts the `qr_image` and `background_image` into numpy arrays. It then creates a mask based on the alpha channel of the QR code image. The QR code image is then blended with the background image using the specified alpha value. The resulting image is stored in the `result_image` attribute.
-
-        If the `with_background` attribute is False or the `background_image` attribute is None, the `qr_image` is converted to RGB format and stored in the `result_image` attribute.
+        This function checks if a background image is available. If it is, it blends the QR image with the background image.
+        The blending is done by iterating over each pixel of the QR image and checking if the pixel is transparent.
+        If the pixel is transparent and the RGB values of the pixel are [0, 0, 0], the pixel is replaced with the corresponding pixel from the background image.
+        If the pixel is transparent but the RGB values are not [0, 0, 0], the pixel is set to [255, 255, 255, 0].
+        If no background image is provided, the QR image is converted to RGB format.
 
         Parameters:
-            None
+            self (object): The instance of the class.
 
         Returns:
             None
@@ -86,13 +107,15 @@ class QRCode:
             self.qr_array = np.array(self.qr_image)
             self.background_array = np.array(self.background_image)
 
-            mask = self.qr_array[:, :, 3] > 0
+            result_image = np.zeros_like(self.qr_array)
 
-            result_image = self.qr_array.copy()
-            result_image[mask] = (
-                self.qr_array[mask] * (1 - self.alpha)
-                + self.background_array[mask] * self.alpha
-            ).astype(np.uint8)
+            for y in range(self.qr_array.shape[0]):
+                for x in range(self.qr_array.shape[1]):
+                    if self.qr_array[y, x, 3] > 0:
+                        if (self.qr_array[y, x, :3] == [0, 0, 0]).all():
+                            result_image[y, x] = self.background_array[y, x]
+                        else:
+                            result_image[y, x] = [255, 255, 255, 0]
 
             self.result_image = Image.fromarray(result_image)
         else:
