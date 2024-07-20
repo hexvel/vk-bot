@@ -58,7 +58,7 @@ async def info(message: Message, user_id: int):
         f"{Emoji.LIST} Количество доверенных": len(user.trust_list["users"]),
     }
 
-    attachment_count = get_random(start=457239018, _min=1, _max=380)
+    attachment_count = get_random(start=457239018, _min=1, _max=200)
     attachment = f"photo-224389197_{attachment_count}"
 
     info_message = "\n".join(
@@ -84,7 +84,9 @@ async def add_friend_command_wrapper(message: Message, user_id: int):
     elif add_friend == 4:
         text = f"{Emoji.OK} [id{user_id}|Пользователю] отправлен повторный запрос на дружбу."
     else:
-        text = f"{Emoji.WARNING} Не удалось добавить [id{user_id}|пользователя] в друзья."
+        text = (
+            f"{Emoji.WARNING} Не удалось добавить [id{user_id}|пользователя] в друзья."
+        )
 
     await message.ctx_api.messages.edit(
         peer_id=message.peer_id,
@@ -143,7 +145,9 @@ async def delete_friend_command_wrapper(message: Message, user_id: int):
     elif delete_friend.in_request_deleted == 1:
         text = f"{Emoji.OK} Отменяю входящюю заявку от [id{user_id}|пользователя]."
     else:
-        text = f"{Emoji.WARNING} Не удалось удалить [id{user_id}|пользователя] из друзей."
+        text = (
+            f"{Emoji.WARNING} Не удалось удалить [id{user_id}|пользователя] из друзей."
+        )
 
     await message.ctx_api.messages.edit(
         peer_id=message.peer_id,
