@@ -58,7 +58,7 @@ async def info(message: Message, user_id: int):
         f"{Emoji.LIST} Количество доверенных": len(user.trust_list["users"]),
     }
 
-    attachment_count = await get_random(start=457239018, _min=1, _max=380)
+    attachment_count = get_random(start=457239018, _min=1, _max=380)
     attachment = f"photo-224389197_{attachment_count}"
 
     info_message = "\n".join(
@@ -83,6 +83,8 @@ async def add_friend_command_wrapper(message: Message, user_id: int):
         text = f"{Emoji.OK} Заявка [id{user_id}|пользователя] одобрена."
     elif add_friend == 4:
         text = f"{Emoji.OK} [id{user_id}|Пользователю] отправлен повторный запрос на дружбу."
+    else:
+        text = f"{Emoji.WARNING} Не удалось добавить [id{user_id}|пользователя] в друзья."
 
     await message.ctx_api.messages.edit(
         peer_id=message.peer_id,
@@ -140,6 +142,8 @@ async def delete_friend_command_wrapper(message: Message, user_id: int):
         text = f"{Emoji.OK} Отменяю исходящюю заявку [id{user_id}|пользователю]."
     elif delete_friend.in_request_deleted == 1:
         text = f"{Emoji.OK} Отменяю входящюю заявку от [id{user_id}|пользователя]."
+    else:
+        text = f"{Emoji.WARNING} Не удалось удалить [id{user_id}|пользователя] из друзей."
 
     await message.ctx_api.messages.edit(
         peer_id=message.peer_id,
@@ -166,9 +170,9 @@ async def add_black_list(message: Message, user_id: int):
 
 @labeler.message(Scope(prefix="ф", commands=["-чс", "-bl"]), FindID())
 async def delete_black_list(message: Message, user_id: int):
-    delete_black_list = await message.ctx_api.account.unban(owner_id=user_id)
+    delete_from_black_list = await message.ctx_api.account.unban(owner_id=user_id)
 
-    if delete_black_list == 1:
+    if delete_from_black_list == 1:
         text = f"{Emoji.OK} [id{user_id}|Пользователь] разблокирован."
     else:
         text = f"{Emoji.NO} Не удалось разблокировать [id{user_id}|пользователя]"

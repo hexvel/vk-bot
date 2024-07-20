@@ -6,7 +6,8 @@ load_dotenv()
 
 tortoise_orm = {
     "connections": {
-        "default": f"mysql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}:3306/{os.getenv('DB_NAME')}"
+        "default": f"mysql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@"
+                   f"{os.getenv('DB_HOST')}:3306/{os.getenv('DB_NAME')}"
     },
     "apps": {
         "models": {

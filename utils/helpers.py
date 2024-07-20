@@ -34,7 +34,7 @@ async def get_attachment_doc(message: Message):
     return await get_attachment(message, "doc")
 
 
-async def get_random(start: int = 0, _min: int = 1, _max: int = 100):
+def get_random(start: int = 0, _min: int = 1, _max: int = 100):
     attachment_count = start
     image_candidate = random.randint(_min, _max)
     attachment_count += image_candidate
